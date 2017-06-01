@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.es_deployment }} 
+  namespace: {{ .Values.namespace }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.es_operator_replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.es_deployment }} 
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.es_operator_image }}:{{ .Values.es_operator_tag }}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace

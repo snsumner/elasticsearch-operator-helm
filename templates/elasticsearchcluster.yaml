@@ -1,0 +1,25 @@
+{{- if not .Release.IsInstall -}}
+apiVersion: enterprises.upmc.com/v1
+kind: ElasticsearchCluster
+metadata:
+  name: {{ .Values.es_cluster_name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  master-node-replicas: {{ .Values.es_master_replicas }}
+  client-node-replicas: {{ .Values.es_client_replicas }}
+  data-node-replicas: {{ .Values.es_data_replicas }}
+  data-volume-size: {{ .Values.volume_size }}
+  elastic-search-image: "{{ .Values.es_image }}:{{ .Values.es_tag }}"
+  java-options: "-Xms{{ .Values.java_xms }} -Xmx{{ .Values.java_xmx }}"
+  smapshot:
+    scheduler-enabled: {{ .Values.schedule_snapshot }} 
+    bucket-name: {{ .Values.bucket_name }} 
+    cron-schedule: '{{ .Values.cron_schedule }}'
+  storage:
+    storage-class-provisioner: kubernetes.io/aws-ebs
+    type: gp2
+  zones:
+{{ toYaml .Values.zones | indent 4 }}
+{{- end -}}

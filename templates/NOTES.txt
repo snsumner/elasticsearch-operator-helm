@@ -1,0 +1,42 @@
+1. To check status of elasticsearch deployment execute: 'kubectl get po,svc,rs,storageclasses,pv,pvc --namespace {{ .Values.namespace }}'
+
+2. By default elasticsearch service is set to ClusterIP change it to NodePort to access elasticsearch:
+
+  'kubectl edit svc elasticsearch'
+  Change type: ClusterIP to NodePort
+  'kubectl describe service elasticsearch --name {{ .Values.namespace }}'
+    NOTE: IP and NodePort
+  Either port forward or SSH into K8S cluster
+  Execute 'curl -k https://IP:NodePort'
+
+Example:
+$ kubectl describe service elasticsearch --namespace elasticsearch
+Name:            elasticsearch
+Namespace:        elasticsearch
+Labels:            component=elasticsearch
+            role=client
+Annotations:        <none>
+Selector:        component=elasticsearch,role=client
+Type:            ClusterIP
+IP:            10.3.10.150
+Port:            http    9200/TCP
+Endpoints:        10.2.3.11:9200,10.2.4.10:9200
+Session Affinity:    None
+Events:            <none>
+
+NOTE: You need 10.3.10.150 and 9200 then you need to ssh into one of the master nodes
+
+$ curl -k https://10.3.10.150:9200
+{
+  "name" : "0a813aee-a555-4748-a6f6-2a65db422594",
+  "cluster_name" : "myesdb",
+  "cluster_uuid" : "SGdFbYC1RtCfpFk6zEQimg",
+  "version" : {
+    "number" : "5.3.1",
+    "build_hash" : "5f9cf58",
+    "build_date" : "2017-04-17T15:52:53.846Z",
+    "build_snapshot" : false,
+    "lucene_version" : "6.4.2"
+  },
+  "tagline" : "You Know, for Search"
+}
