@@ -24,10 +24,10 @@ es_operator_replicas: 1
 es_master_replicas: 1
 
 # Number of es client nodes
-es_client_replicas: 2
+es_client_replicas: 1
 
 # Number of es data nodes
-es_data_replicas: 2
+es_data_replicas: 1
 
 # Size of each volume used by es data nodes
 volume_size: 10Gi
