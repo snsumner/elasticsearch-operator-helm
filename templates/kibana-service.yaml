@@ -10,10 +10,10 @@ metadata:
     addonmanager.kubernetes.io/mode: Reconcile
     kubernetes.io/name: "{{ .Values.kibana_service_name }}"
 spec:
+  type: LoadBalancer
   ports:
   - port: {{ .Values.kibana_external_port }}
     protocol: TCP
     targetPort: ui
-    type: LoadBalancer
   selector:
     k8s-app: {{ .Values.kibana_service_name }}
