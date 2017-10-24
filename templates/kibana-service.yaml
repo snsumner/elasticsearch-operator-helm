@@ -7,6 +7,7 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     k8s-app: {{ .Values.kibana_service_name }}
 spec:
+  type: LoadBalancer
   ports:
     - name: web
       protocol: TCP
