@@ -2,11 +2,17 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# platform type
+platform: vmware
+
 # Namespace to associate all objects use by elasticsearch
 namespace: elasticsearch
 
 # Name of the cluster role binding used by elasticsearch
-es_cluster_role_binding: elasticsearch-operator-admin
+es_cluster_role_binding: elasticsearch-operator
+
+# Name of the service account used by elasticsearch
+es_service_account: elasticsearch-operator
 
 # Deployment name of the elasticsearch operator
 es_deployment: elasticsearch-operator
@@ -15,32 +21,41 @@ es_deployment: elasticsearch-operator
 es_operator_replicas: 1
 
 # Number of es master nodes
-es_master_replicas: 1 
+es_master_replicas: 1
 
 # Number of es client nodes
-es_client_replicas: 2 
+es_client_replicas: 2
 
 # Number of es data nodes
-es_data_replicas: 2 
+es_data_replicas: 2
 
-# Size of each EBS volume used by es data nodes
+# Size of each volume used by es data nodes
 volume_size: 10Gi
 
-# Location of elasticsearch operator image.  
-# NOTE: I clone this from Steve Sloka's docker hub repository located here: https://hub.docker.com/r/upmcenterprises/elasticsearch-operator/ 
-es_operator_image: quay.io/snsumner75/elasticsearch-operator
-es_operator_tag: 0.0.2
+# network host
+network_host: 0.0.0.0
+
+# Location of elasticsearch operator image.
+es_operator_image: upmcenterprises/elasticsearch-operator
+es_operator_tag: latest
 
 # pullpolicy for elasticsearch-opreator image
-pullPolicy: IfNotPresent
+pullPolicy: Always
 
 # Name of the ElasticsearchCluster (third-party resources)
 es_cluster_name: example-es-cluster
 
-# Due do bug with statd-plugin need to overwrite base image used
-# Refer to this issue for details on: https://github.com/upmc-enterprises/elasticsearch-operator/issues/34
-es_image: quay.io/snsumner75/docker-elasticsearch-kubernetes
+# Location of elasticsearch image.
+es_image: upmcenterprises/docker-elasticsearch-kubernetes
 es_tag: 5.3.1
+
+# Location of kibana image.
+kibana_image: upmcenterprises/kibana
+kibana_tag: 5.3.1
+
+# Location of cerebro image.
+cerebro_image: upmcenterprises/cerebro
+cerebro_tag: 0.6.8
 
 # Java memory settings used by es nodes
 java_xms: 256m
@@ -49,19 +64,35 @@ java_xmx: 256m
 # Enable or disable cron scheduler to take snapshot to s3 bucket.
 schedule_snapshot: false
 
-# Name of s3 bucket to write snapshots.  
+# Name of s3 bucket to write snapshots.
 # NOTE: s3 bucket must be created manually before deployment
 bucket_name: elasticsnapshots99
 
 # Frequency to tell cron to take snapshot
 cron_schedule: '@every 2m'
 
+# AWS specific settings
 # AWS availabilty zones used by PVC
 # NOTE: Must have worker nodes located in each availability zone for PVC to work properly
 zones:
  - us-west-2a
  - us-west-2b
  - us-west-2c
+storage_type: gp2
+
+# VMware specific settings
+storage_class: fast
+
+# vSphereVolume = kubernetes.io/vsphere-volume
+# AWS EBS = kubernetes.io/aws-ebs
+storage_class_provisioner: kubernetes.io/vsphere-volume
+
+# Resource provided to Elasticsearch operator
+resource_request_mem: 512Mi
+resource_request_cpu: 500m
+resource_limit_mem: 1024Mi
+resource_limit_cpu: 1
+
 
 # The default image used adds TLS to the Elastic cluster.  This secret is used to volume in certs to the cluster dynamically.  i
 # You are encourage to change them for your cluster.

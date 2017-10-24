@@ -1,6 +1,6 @@
 name: elasticsearch-operator-helm
-version: 0.4.0
-description: Helm chart based off Steve Sloka's elasticsearch operator and from works of Paulo Pires on Elasticsearch K8S project. 
+version: 0.5.0
+description: Helm chart based off Steve Sloka's elasticsearch operator and from works of Paulo Pires on Elasticsearch K8S project.
 home: https://www.elastic.co/
 sources:
   - https://github.com/upmc-enterprises/elasticsearch-operator

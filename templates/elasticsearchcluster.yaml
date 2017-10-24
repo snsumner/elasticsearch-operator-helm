@@ -7,19 +7,27 @@ metadata:
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
+  kibana:
+    image: "{{ .Values.kibana_image}}:{{ .Values.kibana_tag }}"
+  cerebro:
+    images: "{{ .Values.cerebro_image}}:{{ .Values.cerebro_tag }}"
   master-node-replicas: {{ .Values.es_master_replicas }}
   client-node-replicas: {{ .Values.es_client_replicas }}
   data-node-replicas: {{ .Values.es_data_replicas }}
+  network-host: {{ .Values.network_host }}
   data-volume-size: {{ .Values.volume_size }}
   elastic-search-image: "{{ .Values.es_image }}:{{ .Values.es_tag }}"
   java-options: "-Xms{{ .Values.java_xms }} -Xmx{{ .Values.java_xmx }}"
   smapshot:
-    scheduler-enabled: {{ .Values.schedule_snapshot }} 
-    bucket-name: {{ .Values.bucket_name }} 
+    scheduler-enabled: {{ .Values.schedule_snapshot }}
+    bucket-name: {{ .Values.bucket_name }}
     cron-schedule: '{{ .Values.cron_schedule }}'
   storage:
-    storage-class-provisioner: kubernetes.io/aws-ebs
-    type: gp2
+    storage-class: {{ .Values.storage_class }}
+    storage-class-provisioner: {{ .Values.storage_class_provisioner }}
+{{ if .Value.platform eq "aws" }}
+    type: {{ .Value.storage_type }}
   zones:
 {{ toYaml .Values.zones | indent 4 }}
+{{- end -}}
 {{- end -}}

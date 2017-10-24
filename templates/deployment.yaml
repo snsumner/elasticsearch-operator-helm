@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Values.es_deployment }} 
+  name: {{ .Values.es_deployment }}
   namespace: {{ .Values.namespace }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.es_deployment }} 
+        app: {{ .Values.es_deployment }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
@@ -21,3 +21,4 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+      serviceAccount: {{ .Values.es_deployment }}
