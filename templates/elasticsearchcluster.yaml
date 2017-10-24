@@ -25,8 +25,8 @@ spec:
   storage:
     storage-class: {{ .Values.storage_class }}
     storage-class-provisioner: {{ .Values.storage_class_provisioner }}
-{{ if eq .Value.platform "aws" }}
-    type: {{ .Value.storage_type }}
+{{ if eq .Values.platform "aws" }}
+    type: {{ .Values.storage_type }}
   zones:
 {{ toYaml .Values.zones | indent 4 }}
 {{ end }}
