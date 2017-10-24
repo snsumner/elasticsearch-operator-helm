@@ -1,4 +1,3 @@
-{{- if not .Release.IsInstall -}}
 apiVersion: enterprises.upmc.com/v1
 kind: ElasticsearchCluster
 metadata:
@@ -18,10 +17,6 @@ spec:
   data-volume-size: {{ .Values.volume_size }}
   elastic-search-image: "{{ .Values.es_image }}:{{ .Values.es_tag }}"
   java-options: "-Xms{{ .Values.java_xms }} -Xmx{{ .Values.java_xmx }}"
-  smapshot:
-    scheduler-enabled: {{ .Values.schedule_snapshot }}
-    bucket-name: {{ .Values.bucket_name }}
-    cron-schedule: '{{ .Values.cron_schedule }}'
   storage:
     storage-class: {{ .Values.storage_class }}
     storage-class-provisioner: {{ .Values.storage_class_provisioner }}
@@ -29,5 +24,8 @@ spec:
     type: {{ .Values.storage_type }}
   zones:
 {{ toYaml .Values.zones | indent 4 }}
+  smapshot:
+    scheduler-enabled: {{ .Values.schedule_snapshot }}
+    bucket-name: {{ .Values.bucket_name }}
+    cron-schedule: '{{ .Values.cron_schedule }}'
 {{ end }}
-{{- end -}}
