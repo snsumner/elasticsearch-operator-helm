@@ -58,15 +58,6 @@ kibana_service_name: kibana
 # External port number for Kibana
 kibana_external_port: 5601
 
-# Location of cerebro image.
-cerebro_image: upmcenterprises/cerebro
-cerebro_tag: 0.6.8
-
-# Name of the Cerebro service
-cerebro_service_name: cerebro
-# External port number of Cerebro
-cerebro_external_port: 9000
-
 # Java memory settings used by es nodes
 java_xms: 256m
 java_xmx: 256m

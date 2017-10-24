@@ -6,14 +6,11 @@ metadata:
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     k8s-app: {{ .Values.kibana_service_name }}
-    kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
-    kubernetes.io/name: "{{ .Values.kibana_service_name }}"
 spec:
-  type: LoadBalancer
   ports:
-  - port: {{ .Values.kibana_external_port }}
-    protocol: TCP
-    targetPort: ui
+    - name: web
+      protocol: TCP
+      port: {{ .Values.kibana_external_port }}
+      targetPort: {{ .Values.kibana_external_port }}
   selector:
     name: "{{ .Values.kibana_service_name }}-{{ .Values.es_cluster_name }}"
