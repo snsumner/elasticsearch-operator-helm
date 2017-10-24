@@ -37,7 +37,7 @@ network_host: 0.0.0.0
 
 # Location of elasticsearch operator image.
 es_operator_image: upmcenterprises/elasticsearch-operator
-es_operator_tag: latest
+es_operator_tag: 0.0.8
 
 # pullpolicy for elasticsearch-opreator image
 pullPolicy: Always
